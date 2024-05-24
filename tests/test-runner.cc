@@ -107,6 +107,9 @@ void __cheri_compartment("test_runner") run_tests()
 	debug_log("Trying to print string: {}", std::string_view{testString, 13});
 
 	run_timed("All tests", []() {
+		// This test is disabled because it uses too much memory for the heap
+		// tests to work.
+		// run_timed("big data in globals", test_big_data);
 		run_timed("Debug helpers (C++)", test_debug_cxx);
 		run_timed("Debug helpers (C)", test_debug_c);
 		run_timed("MMIO", test_mmio);
