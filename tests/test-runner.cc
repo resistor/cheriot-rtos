@@ -110,6 +110,8 @@ void __cheri_compartment("test_runner") run_tests()
 	          std::string_view{testString, 13});
 	const std::string S = "I am a walrus"s;
 	debug_log("Trying to print std::string: {}", S);
+	debug_log("Trying to print function pointer {}", compartment_error_handler);
+
 	run_timed("All tests", []() {
 		run_timed("Debug helpers (C++)", test_debug_cxx);
 		run_timed("Debug helpers (C)", test_debug_c);
