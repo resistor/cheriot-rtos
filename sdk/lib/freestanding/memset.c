@@ -33,14 +33,18 @@
  */
 
 #include <cdefs.h>
+#include <setjmp.h>
 #include <stddef.h>
 #include <string.h>
 
 #define wsize sizeof(unsigned int)
 #define wmask (wsize - 1)
 
+jmp_buf buf;
+
 void *memset(void *dst0, int c0, size_t length)
 {
+	longjmp(buf, 1);
 	size_t         t;
 	unsigned int   c;
 	unsigned char *dst;
@@ -92,6 +96,7 @@ void *memset(void *dst0, int c0, size_t length)
 
 void __cheri_libcall explicit_bzero(void *s, size_t n)
 {
+	setjmp(buf);
 	memset(s, 0, n);
 }
 
