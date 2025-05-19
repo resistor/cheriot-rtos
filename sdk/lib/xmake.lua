@@ -1,6 +1,7 @@
 includes(
 	"atomic",
 	"compartment_helpers",
+	"cpp_string",
 	"crt",
 	"cxxrt",
 	"debug",

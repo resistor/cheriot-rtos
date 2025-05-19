@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+
+#define _LIBCPP_WCHAR_H
+
 /**
  * Minimal wchar.h  This exists because libc++ doesn't support platforms that
  * don't have it.  We don't expect anything to actually use the template

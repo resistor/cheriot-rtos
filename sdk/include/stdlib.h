@@ -429,4 +429,13 @@ unsigned long __cheri_libcall strtoul(const char *nptr,
                                       char      **endptr,
                                       int         base);
 
+struct div_t { int quot; int rem; };
+struct ldiv_t { long quot; long rem; };
+struct lldiv_t { long long quot; long long rem; };
+struct div_t     div(      int numer,       int denom);
+struct ldiv_t   ldiv(     long numer,      long denom);
+struct lldiv_t lldiv(long long numer, long long denom);                          // C++0X
+
+typedef long long time_t;
+
 __END_DECLS

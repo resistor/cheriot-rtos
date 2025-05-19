@@ -3,6 +3,7 @@
 
 #ifndef _ERRNO_H_
 #define _ERRNO_H_
+#define _LIBCPP_ERRNO_H
 
 #define ECOMPARTMENTFAIL 1 // Compartment failed
 #define EPERM 2            // Operation not permitted.

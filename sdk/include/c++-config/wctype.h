@@ -2,6 +2,9 @@
 // SPDX-License-Identifier: MIT
 
 #pragma once
+
+#define _LIBCPP_WCTYPE_H
+
 /**
  * Stub definitions for libc++.
  */

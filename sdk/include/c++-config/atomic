@@ -4,6 +4,7 @@
 #pragma once
 #include <concepts>
 #include <futex.h>
+#include <limits>
 #include <type_traits>
 
 __clang_ignored_warning_push("-Watomic-alignment") namespace std

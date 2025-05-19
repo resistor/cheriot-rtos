@@ -105,6 +105,7 @@ firmware("test-suite")
     add_deps("message_queue", "locks", "event_group")
     add_deps("stdio")
     add_deps("strtol")
+    add_deps("cpp_string")
     -- Tests
     add_deps("mmio_test")
     add_deps("eventgroup_test")
