@@ -1036,7 +1036,7 @@ public:
     __annotate_new(0);
   }
 
-  _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_STRING_INTERNAL_MEMORY_ACCESS basic_string(const basic_string& __str)
+  _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_STRING_INTERNAL_MEMORY_ACCESS _LIBCPP_CHERI_LIBCALL basic_string(const basic_string& __str)
       : __alloc_(__alloc_traits::select_on_container_copy_construction(__str.__alloc_)) {
     if (!__str.__is_long()) {
       __rep_ = __str.__rep_;
@@ -2115,7 +2115,7 @@ private:
   }
 
   inline _LIBCPP_CONSTEXPR_SINCE_CXX20 void __init(const value_type* __s, size_type __sz, size_type __reserve);
-  inline _LIBCPP_CONSTEXPR_SINCE_CXX20 void __init(const value_type* __s, size_type __sz);
+  inline _LIBCPP_CONSTEXPR_SINCE_CXX20 _LIBCPP_CHERI_LIBCALL void __init(const value_type* __s, size_type __sz);
   inline _LIBCPP_CONSTEXPR_SINCE_CXX20 void __init(size_type __n, value_type __c);
 
   // Slow path for the (inlined) copy constructor for 'long' strings.

@@ -795,6 +795,8 @@ typedef __char32_t char32_t;
 #    define _LIBCPP_CONSTEXPR_SINCE_CXX20
 #  endif
 
+#define _LIBCPP_CHERI_LIBCALL __attribute__((cheri_libcall))
+
 #  if _LIBCPP_STD_VER >= 23
 #    define _LIBCPP_CONSTEXPR_SINCE_CXX23 constexpr
 #  else

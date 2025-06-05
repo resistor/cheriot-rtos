@@ -394,6 +394,33 @@ static inline int free(void *ptr)
 {
 	return heap_free(MALLOC_CAPABILITY, ptr);
 }
+#else
+static inline void *malloc_with_capability(size_t size, AllocatorCapability cap)
+{
+	Timeout t = {0, MALLOC_WAIT_TICKS};
+	void   *ptr =
+	  heap_allocate(&t, cap, size, AllocateWaitRevocationNeeded);
+	if (!__builtin_cheri_tag_get(ptr))
+	{
+		ptr = NULL;
+	}
+	return ptr;
+}
+static inline void *calloc_with_capability(size_t nmemb, size_t size, AllocatorCapability cap)
+{
+	Timeout t   = {0, MALLOC_WAIT_TICKS};
+	void   *ptr = heap_allocate_array(
+      &t, cap, nmemb, size, AllocateWaitRevocationNeeded);
+	if (!__builtin_cheri_tag_get(ptr))
+	{
+		ptr = NULL;
+	}
+	return ptr;
+}
+static inline int free_with_capability(void *ptr, AllocatorCapability cap)
+{
+	return heap_free(cap, ptr);
+}
 #endif
 
 size_t __cheri_compartment("allocator") heap_available(void);

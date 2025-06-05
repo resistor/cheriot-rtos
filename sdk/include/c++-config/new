@@ -17,7 +17,6 @@
 #include_next <new>
 #include <stdlib.h>
 
-#if !defined(CHERIOT_NO_NEW_DELETE) && !defined(CHERIOT_NO_AMBIENT_MALLOC)
 namespace std
 {
 	/**
@@ -44,9 +43,15 @@ namespace std
 			/**
 			 * Helper to call the allocator and raise an error if allocation fails.
 			 */
+#if !defined(CHERIOT_NO_NEW_DELETE) && !defined(CHERIOT_NO_AMBIENT_MALLOC)
 			static inline void *allocate(size_t size)
 			{
 				void *ptr = malloc(size);
+#else
+			static inline void *allocate(size_t size, AllocatorCapability cap)
+			{
+				void *ptr = malloc_with_capability(size, cap);
+#endif
 				while (ptr == nullptr)
 				{
 					if (newHandler)
@@ -85,9 +90,10 @@ namespace std
 
 } // namespace std
 
-#	pragma clang diagnostic push
-#	pragma clang diagnostic ignored "-Winline-new-delete"
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Winline-new-delete"
 
+#if !defined(CHERIOT_NO_NEW_DELETE) && !defined(CHERIOT_NO_AMBIENT_MALLOC)
 [[nodiscard]]
   __always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void *
   operator new(std::size_t size)
@@ -169,5 +175,60 @@ void operator delete[](void            *ptr,
                        const std::nothrow_t &) noexcept;
 
 #	endif
-#	pragma clang diagnostic pop
+#else
+[[nodiscard]]
+  __always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void *
+  operator new(std::size_t size, AllocatorCapability cap)
+{
+	return std::__new_detail::NewHelper::allocate(size, cap);
+}
+
+[[nodiscard]]
+  __always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void *
+  operator new(std::size_t size, const std::nothrow_t &, AllocatorCapability cap) noexcept
+{
+	return std::__new_detail::NewHelper::allocate(size, cap);
+}
+
+[[nodiscard]]
+  __always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void *
+  operator new[](std::size_t size, AllocatorCapability cap)
+{
+	return std::__new_detail::NewHelper::allocate(size, cap);
+}
+[[nodiscard]]
+  __always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void *
+  operator new[](std::size_t size, const std::nothrow_t &, AllocatorCapability cap) noexcept
+{
+	return std::__new_detail::NewHelper::allocate(size, cap);
+}
+__always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void
+operator delete(void *ptr, AllocatorCapability cap) noexcept
+{
+	::free_with_capability(ptr, cap);
+}
+__always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void
+operator delete(void *ptr, std::size_t size, AllocatorCapability cap) noexcept
+{
+	::free_with_capability(ptr, cap);
+}
+
+__always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void
+operator delete[](void *ptr, AllocatorCapability cap) noexcept
+{
+	::free_with_capability(ptr, cap);
+}
+__always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void
+operator delete[](void *ptr, std::size_t size, AllocatorCapability cap) noexcept
+{
+	::free_with_capability(ptr, cap);
+}
+__always_inline _LIBCPP_OVERRIDABLE_FUNC_VIS inline void
+operator delete[](void *ptr, const std::nothrow_t &, AllocatorCapability cap) noexcept
+{
+	::free_with_capability(ptr, cap);
+}
+
 #endif
+
+#pragma clang diagnostic pop
